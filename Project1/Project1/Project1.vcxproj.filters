@@ -27,6 +27,12 @@
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Misere_XO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="diamond.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h">
@@ -39,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Numerical_TicTacToe_Classes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misere_XO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="diamond.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
