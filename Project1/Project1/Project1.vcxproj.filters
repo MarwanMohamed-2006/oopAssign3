@@ -28,6 +28,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SUS.cpp">
+    <ClCompile Include="Misere_XO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="diamond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +49,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SUS.h">
+    <ClInclude Include="Misere_XO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="diamond.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
