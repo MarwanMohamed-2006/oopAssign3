@@ -124,12 +124,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="diamond.cpp" />
-    <ClCompile Include="Four4_Board.cpp" />
-    <ClCompile Include="Four4_UI.cpp" />
     <ClCompile Include="Misere_XO.cpp" />
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp" />
-    <ClCompile Include="Pyramid_Booard.cpp" />
-    <ClCompile Include="Pyramid_UI.cpp" />
+    <ClCompile Include="SUS.cpp" />
     <ClCompile Include="Tic_Tac_Toe.cpp" />
     <ClCompile Include="XO_Classes.cpp" />
     <ClCompile Include="XO_Demo.cpp.cpp" />
@@ -137,12 +134,9 @@
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h" />
     <ClInclude Include="diamond.h" />
-    <ClInclude Include="Four4_Board.h" />
-    <ClInclude Include="Four4_UI.h" />
     <ClInclude Include="Misere_XO.h" />
     <ClInclude Include="Numerical_TicTacToe_Classes.h" />
-    <ClInclude Include="Pyramid_Board.h" />
-    <ClInclude Include="Pyramid_UI.h" />
+    <ClInclude Include="SUS.h" />
     <ClInclude Include="Tic_Tac_Toe.h" />
     <ClInclude Include="XO_Classes.h" />
   </ItemGroup>
