@@ -127,7 +127,7 @@
     <ClCompile Include="SUS.cpp" />
     <ClCompile Include="Tic_Tac_Toe.cpp" />
     <ClCompile Include="XO_Classes.cpp" />
-    <ClCompile Include="XO_Demo.cpp" />
+    <ClCompile Include="XO_Demo.cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h" />
