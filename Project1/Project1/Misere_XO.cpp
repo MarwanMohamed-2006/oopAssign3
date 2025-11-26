@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <iomanip>
-#include <cctype>  // for toupper()
+#include <cctype>  
 #include "Misere_XO.h"
 using namespace std;
 //--------------------------------------- Misere_XO_Board Implementation
@@ -34,11 +34,15 @@ bool Misere_XO_Board::three_in_a_row(char sym) {
 	for (int i = 0; i < rows; ++i) {
 		if ((all_equal(board[i][0], board[i][1], board[i][2]) && board[i][0] == sym) ||
 			(all_equal(board[0][i], board[1][i], board[2][i]) && board[0][i] == sym))
+		{
 			return true;
+		}
 	}
 	if ((all_equal(board[0][0], board[1][1], board[2][2]) && board[1][1] == sym) ||
 		(all_equal(board[0][2], board[1][1], board[2][0]) && board[1][1] == sym))
+	{
 		return true;
+	}
 	return false;
 }
 
