@@ -43,7 +43,7 @@ bool TicTacToe_Board::is_win(Player<char>* player)
 		};
 	// Check rows 
 	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j <= 5 - 3; j++) { 
+		for (int j = 0; j <= 5 - 3; j++) {
 			if (all_equal(board[i][j], board[i][j + 1], board[i][j + 2]))
 				count++;
 		}
@@ -71,10 +71,10 @@ bool TicTacToe_Board::is_win(Player<char>* player)
 		}
 	}
 
-	
+
 	return false;
 
-	
+
 }
 
 int TicTacToe_Board::counting(Player<char>* player)
@@ -135,7 +135,8 @@ bool TicTacToe_Board::is_lose(Player<char>*)
 
 bool TicTacToe_Board::is_draw(Player<char>* player)
 {
-	return false;
+	return n_moves == 25;
+	
 }
 
 
