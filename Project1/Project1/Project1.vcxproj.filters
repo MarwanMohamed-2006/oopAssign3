@@ -33,6 +33,18 @@
     <ClCompile Include="diamond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Four4_Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Four4_UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid_Booard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid_UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h">
@@ -51,6 +63,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="diamond.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Four4_Board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Four4_UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid_Board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid_UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
