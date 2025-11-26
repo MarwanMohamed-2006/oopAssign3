@@ -27,6 +27,7 @@
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SUS.cpp">
     <ClCompile Include="Misere_XO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,6 +48,7 @@
     <ClInclude Include="Numerical_TicTacToe_Classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SUS.h">
     <ClInclude Include="Misere_XO.h">
       <Filter>Header Files</Filter>
     </ClInclude>

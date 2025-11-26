@@ -5,6 +5,7 @@
 #include "XO_Classes.h"
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
+#include "SUS.h"
 #include "Four4_Board.h"
 #include "Four4_UI.h"
 #include "Pyramid_Board.h"
@@ -60,9 +61,22 @@ int main() {
             break;
         }
         case 2:
+        {
             cout << "\n=== SUS Game ===\n";
-            break;
+            UI<char>* game_ui = new SUS_UI();
+            Board<char>* sus_board = new SUS_Board();
+            Player<char>** players = game_ui->setup_players(); // Set up players ('S' and 'U')
+            GameManager<char> sus_game(sus_board, players, game_ui);
+            sus_game.run();
 
+            delete sus_board;
+            // Clean up players and UI
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui; // Don't forget to delete the UI object too
+            break;
+        }
         case 3:
             cout << "\n=== Four-in-a-Row ===\n";
             break;
