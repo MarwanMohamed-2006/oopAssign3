@@ -93,32 +93,32 @@ int main() {
         case 8:
             {
              UI<char>* game_ui = new Four4_UI();
-  Board<char>* four4_board = new Four4_Board();
-  Player<char>** players = game_ui->setup_players();
-  GameManager<char> four4_game(four4_board, players, game_ui);
-  four4_game.run();
+             Board<char>* four4_board = new Four4_Board();
+             Player<char>** players = game_ui->setup_players();
+             GameManager<char> four4_game(four4_board, players, game_ui);
+             four4_game.run();
 
-  delete four4_board;
-  for (int i = 0; i < 2; ++i) delete players[i];
-  delete[] players;
-  delete game_ui;
-  break;
-            break;
+              delete four4_board;
+              for (int i = 0; i < 2; ++i) delete players[i];
+              delete[] players;
+              delete game_ui;
+         break;
+            
         }
         case 9:
             {
          UI<char>* game_ui = new Pyramid_UI();
- Board<char>* pyr_board = new Pyramid_Board();
- Player<char>** players = game_ui->setup_players();
- GameManager<char> pyr_game(pyr_board, players, game_ui);
- pyr_game.run();
+         Board<char>* pyr_board = new Pyramid_Board();
+        Player<char>** players = game_ui->setup_players();
+        GameManager<char> pyr_game(pyr_board, players, game_ui);
+         pyr_game.run();
 
- delete pyr_board;
- for (int i = 0; i < 2; ++i) delete players[i];
- delete[] players;
- delete game_ui;
- break;
-            break;
+        delete pyr_board;
+        for (int i = 0; i < 2; ++i) delete players[i];
+         delete[] players;
+         delete game_ui;
+         break;
+            
         }
         case 10:
         {
