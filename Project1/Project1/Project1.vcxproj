@@ -123,6 +123,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="diamond.cpp" />
+    <ClCompile Include="Misere_XO.cpp" />
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp" />
     <ClCompile Include="Tic_Tac_Toe.cpp" />
     <ClCompile Include="XO_Classes.cpp" />
@@ -130,6 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h" />
+    <ClInclude Include="diamond.h" />
+    <ClInclude Include="Misere_XO.h" />
     <ClInclude Include="Numerical_TicTacToe_Classes.h" />
     <ClInclude Include="Tic_Tac_Toe.h" />
     <ClInclude Include="XO_Classes.h" />
