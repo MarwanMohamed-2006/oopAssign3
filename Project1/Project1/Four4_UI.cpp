@@ -1,23 +1,56 @@
-#pragma once
-#ifndef PYRAMID_BOARD_H
-#define PYRAMID_BOARD_H
 
-#include "BoardGame_Classes.h"
+#include "Four4_UI.h"
+#include <iostream>
 using namespace std;
 
-class Pyramid_Board : public Board<char> {
-public:
-    Pyramid_Board();
+Four4_UI::Four4_UI() : UI<char>("4x4 Tic-Tac-Toe (move tokens)", 2) {}
 
-    bool update_board(Move<char>* move) override;
-    bool is_win(Player<char>* player) override;
-    bool is_lose(Player<char>* player) override { return false; }
-    bool is_draw(Player<char>* player) override;
-    bool game_is_over(Player<char>* player) override;
+Player<char>* Four4_UI::create_player(string& name, char symbol, PlayerType type) {
+    return new Player<char>(name, symbol, type);
+}
 
-private:
-    bool valid_cell(int r, int c) const;
-    const vector<pair<int, int>> directions = { {0,1},{0,-1},{1,0},{-1,0},{1,1},{-1,-1},{1,-1},{-1,1} };
-};
+Move<char>* Four4_UI::get_move(Player<char>* player) {
+    auto board_ptr = player->get_board_ptr();
+    auto mat = board_ptr->get_board_matrix();
+    int rows = board_ptr->get_rows();
+    int cols = board_ptr->get_columns();
 
-#endif // PYRAMID_BOARD_H
+    if (player->get_type() == PlayerType::COMPUTER) {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                if (mat[i][j] == '.') {
+                    const int dirs[4][2] = { {-1,0},{1,0},{0,-1},{0,1} };
+                    for (int d = 0; d < 4; ++d) {
+                        int ni = i + dirs[d][0];
+                        int nj = j + dirs[d][1];
+                        if (ni >= 0 && ni < rows && nj >= 0 && nj < cols && mat[ni][nj] == player->get_symbol()) {
+                            cout << player->get_name() << " (" << player->get_symbol() << ") moves to " << i << " " << j << endl;
+                            return new Move<char>(i, j, player->get_symbol());
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else {
+        int dstX, dstY;
+        while (true) {
+            cout << player->get_name() << " (" << player->get_symbol() << ") enter position (r c): ";
+            cin >> dstX >> dstY;
+
+            if (dstX < 0 || dstX >= rows || dstY < 0 || dstY >= cols) {
+                cout << "Invalid coordinates. Try again.\n";
+                continue;
+            }
+
+            if (mat[dstX][dstY] != '.') {
+                cout << "Destination not empty. Try again.\n";
+                continue;
+            }
+            break;
+        }
+        return new Move<char>(dstX, dstY, player->get_symbol());
+    }
+
+    return nullptr;
+}
