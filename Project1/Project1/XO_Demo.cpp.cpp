@@ -1,11 +1,16 @@
-﻿//--------------------------------------- //
+//--------------------------------------- //
 #include <iostream>
 #include <ctime>
 #include "BoardGame_Classes.h"
 #include "XO_Classes.h"
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
+#include "Four4_Board.h"
+#include "Four4_UI.h"
+#include "Pyramid_Board.h"
+#include "Pyramid_UI.h"
 #include "Misere_XO.h"
+
 using namespace std;
 
 int main() {
@@ -98,13 +103,35 @@ int main() {
 
 
         case 8:
-            cout << "\n=== 4x4 Tic-Tac-Toe ===\n";
-            break;
+            {
+             UI<char>* game_ui = new Four4_UI();
+             Board<char>* four4_board = new Four4_Board();
+             Player<char>** players = game_ui->setup_players();
+             GameManager<char> four4_game(four4_board, players, game_ui);
+             four4_game.run();
 
+              delete four4_board;
+              for (int i = 0; i < 2; ++i) delete players[i];
+              delete[] players;
+              delete game_ui;
+         break;
+            
+        }
         case 9:
-            cout << "\n=== Pyramid Tic-Tac-Toe ===\n";
-            break;
+            {
+         UI<char>* game_ui = new Pyramid_UI();
+         Board<char>* pyr_board = new Pyramid_Board();
+        Player<char>** players = game_ui->setup_players();
+        GameManager<char> pyr_game(pyr_board, players, game_ui);
+         pyr_game.run();
 
+        delete pyr_board;
+        for (int i = 0; i < 2; ++i) delete players[i];
+         delete[] players;
+         delete game_ui;
+         break;
+            
+        }
         case 10:
         {
             UI<int>* game_ui = new Numerical_UI();
