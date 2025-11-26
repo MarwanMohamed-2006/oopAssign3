@@ -4,9 +4,9 @@
 using namespace std;
 
 class Misere_XO_Board : public Board<char> {
-
-public:
+private:
 	char blank_symbol = '.';
+public:
 	Misere_XO_Board();
 	bool update_board(Move<char>* move);
 	bool is_lose(Player<char>* player);
