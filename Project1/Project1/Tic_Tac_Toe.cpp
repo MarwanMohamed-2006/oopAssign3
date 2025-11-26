@@ -167,7 +167,7 @@ void TicTacToe_Board::winner(Player<char>* player1, Player<char>* player2)
 
 Player<char>* TicTacToe_UI::create_player(string& name, char symbol, PlayerType type)
 {
-	// Create player based on type
+	// Create player based on typee
 	cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer")
 		<< " player: " << name << " (" << symbol << ")\n";
 
