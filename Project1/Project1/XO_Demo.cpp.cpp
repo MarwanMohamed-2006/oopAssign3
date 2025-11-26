@@ -82,12 +82,20 @@ int main() {
 
         case 6:
         {
-            cout << "\n=== Misere Tic-Tac-Toe ===\n";
-            break;
+			UI<char>* game_ui = new Misere_XO_UI();
+			Board<char>* misere_board = new Misere_XO_Board();
+			Player<char>** players = game_ui->setup_players();
+			GameManager<char> misere_game(misere_board, players, game_ui);
+            misere_game.run();
+
         }
         case 7:
-            cout << "\n=== Diamond Tic-Tac-Toe ===\n";
-            break;
+           /*UI<char>*game_ui = new ();
+            Board<char>* diamond_board = new ();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> diamond_game(diamond_board, players, game_ui);
+            diamond_game.run();*/
+
 
         case 8:
             cout << "\n=== 4x4 Tic-Tac-Toe ===\n";
