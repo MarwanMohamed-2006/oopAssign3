@@ -27,23 +27,28 @@ bool Misere_XO_Board::update_board(Move<char>* move) {
 	}
 	return false;
 }
+
+
+bool all_equal(char a, char b, char c, char blank_symbol) 
+{
+	return (a == b && b == c && a != blank_symbol);
+}
+
+
 bool Misere_XO_Board::three_in_a_row(char sym) {
-	auto all_equal = [&](char a, char b, char c) {
-		return a == b && b == c && a != blank_symbol;
-	};
-	for (int i = 0; i < rows; ++i) {
-		if ((all_equal(board[i][0], board[i][1], board[i][2]) && board[i][0] == sym) ||
-			(all_equal(board[0][i], board[1][i], board[2][i]) && board[0][i] == sym))
-		{
-			return true;
-		}
-	}
-	if ((all_equal(board[0][0], board[1][1], board[2][2]) && board[1][1] == sym) ||
-		(all_equal(board[0][2], board[1][1], board[2][0]) && board[1][1] == sym))
-	{
-		return true;
-	}
-	return false;
+    for (int i = 0; i < rows; ++i) {
+        if ((all_equal(board[i][0], board[i][1], board[i][2], blank_symbol) && board[i][0] == sym) ||
+            (all_equal(board[0][i], board[1][i], board[2][i], blank_symbol) && board[0][i] == sym))
+        {
+            return true;
+        }
+    }
+    if ((all_equal(board[0][0], board[1][1], board[2][2], blank_symbol) && board[1][1] == sym) ||
+        (all_equal(board[0][2], board[1][1], board[2][0], blank_symbol) && board[1][1] == sym))
+    {
+        return true;
+    }
+    return false;
 }
 
 bool Misere_XO_Board::is_lose(Player<char>* player) {
