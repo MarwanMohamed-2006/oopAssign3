@@ -30,6 +30,9 @@
     <ClCompile Include="SUS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="infinity_tictactoe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SUS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="infinity-tictactoe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

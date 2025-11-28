@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="infinity_tictactoe.cpp" />
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp" />
     <ClCompile Include="SUS.cpp" />
     <ClCompile Include="Tic_Tac_Toe.cpp" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h" />
+    <ClInclude Include="infinity-tictactoe.h" />
     <ClInclude Include="Numerical_TicTacToe_Classes.h" />
     <ClInclude Include="SUS.h" />
     <ClInclude Include="Tic_Tac_Toe.h" />

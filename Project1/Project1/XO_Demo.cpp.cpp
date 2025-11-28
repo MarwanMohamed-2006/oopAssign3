@@ -6,6 +6,7 @@
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
 #include "SUS.h"
+#include "infinity-tictactoe.h" 
 using namespace std;
 
 int main() {
@@ -127,8 +128,22 @@ int main() {
             break;
 
         case 12:
+            
+        {
             cout << "\n=== Infinity Tic-Tac-Toe (Group) ===\n";
+            UI<char>* game_ui = new Infinity_UI();
+            Board<char>* infinity_board = new Infinity_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> infinity_game(infinity_board, players, game_ui);
+            infinity_game.run();
+
+            delete infinity_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
             break;
+        }
 
         case 13:
             cout << "\n=== Ultimate Tic-Tac-Toe (Bonus) ===\n";
