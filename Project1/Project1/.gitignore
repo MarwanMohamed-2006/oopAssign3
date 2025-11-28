@@ -1,0 +1,4 @@
+# Visual Studio project files
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
