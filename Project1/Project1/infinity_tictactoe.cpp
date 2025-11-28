@@ -138,7 +138,7 @@ Move<char>* Infinity_UI::get_move(Player<char>* player) {
         }
 
         if (!empty_cells.empty()) {
-            // Pick a random empty cell
+           
             int idx = rand() % empty_cells.size();
             x = empty_cells[idx].first;
             y = empty_cells[idx].second;
