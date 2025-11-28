@@ -1,4 +1,4 @@
-﻿//--------------------------------------- //
+//--------------------------------------- //
 #include <iostream>
 #include <ctime>
 #include "BoardGame_Classes.h"
@@ -6,24 +6,31 @@
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
 #include "SUS.h"
-#include "infinity-tictactoe.h" 
+#include "Four4_Board.h"
+#include "Four4_UI.h"
+#include "Pyramid_Board.h"
+#include "Pyramid_UI.h"
+#include "Misere_XO.h"
+
 using namespace std;
 
 int main() {
+    system("cls");
+
     srand(static_cast<unsigned int>(time(0)));
 
     int choice = 0;
 
     do {
         cout << "\n==============================\n";
-        cout << "🎮 FCAI Board Games Menu 🎮\n";
+        cout << " FCAI Board Games Menu \n";
         cout << "==============================\n";
         cout << "1. Tic-Tac-Toe (X-O)\n";
         cout << "2. SUS\n";
         cout << "3. Four-in-a-Row\n";
         cout << "4. 5x5 Tic-Tac-Toe\n";
         cout << "5. Word Tic-Tac-Toe\n";
-        cout << "6. Misère Tic-Tac-Toe\n";
+        cout << "6. Misere Tic-Tac-Toe\n";
         cout << "7. Diamond Tic-Tac-Toe\n";
         cout << "8. 4x4 Tic-Tac-Toe\n";
         cout << "9. Pyramid Tic-Tac-Toe\n";
@@ -93,21 +100,52 @@ int main() {
             break;
 
         case 6:
-            cout << "\n=== Misère Tic-Tac-Toe ===\n";
-            break;
+        {
+			UI<char>* game_ui = new Misere_XO_UI();
+			Board<char>* misere_board = new Misere_XO_Board();
+			Player<char>** players = game_ui->setup_players();
+			GameManager<char> misere_game(misere_board, players, game_ui);
+            misere_game.run();
 
+        }
         case 7:
-            cout << "\n=== Diamond Tic-Tac-Toe ===\n";
-            break;
+           /*UI<char>*game_ui = new ();
+            Board<char>* diamond_board = new ();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> diamond_game(diamond_board, players, game_ui);
+            diamond_game.run();*/
+
 
         case 8:
-            cout << "\n=== 4x4 Tic-Tac-Toe ===\n";
-            break;
+            {
+             UI<char>* game_ui = new Four4_UI();
+             Board<char>* four4_board = new Four4_Board();
+             Player<char>** players = game_ui->setup_players();
+             GameManager<char> four4_game(four4_board, players, game_ui);
+             four4_game.run();
 
+              delete four4_board;
+              for (int i = 0; i < 2; ++i) delete players[i];
+              delete[] players;
+              delete game_ui;
+         break;
+            
+        }
         case 9:
-            cout << "\n=== Pyramid Tic-Tac-Toe ===\n";
-            break;
+            {
+         UI<char>* game_ui = new Pyramid_UI();
+         Board<char>* pyr_board = new Pyramid_Board();
+        Player<char>** players = game_ui->setup_players();
+        GameManager<char> pyr_game(pyr_board, players, game_ui);
+         pyr_game.run();
 
+        delete pyr_board;
+        for (int i = 0; i < 2; ++i) delete players[i];
+         delete[] players;
+         delete game_ui;
+         break;
+            
+        }
         case 10:
         {
             UI<int>* game_ui = new Numerical_UI();
@@ -128,22 +166,8 @@ int main() {
             break;
 
         case 12:
-            
-        {
             cout << "\n=== Infinity Tic-Tac-Toe (Group) ===\n";
-            UI<char>* game_ui = new Infinity_UI();
-            Board<char>* infinity_board = new Infinity_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> infinity_game(infinity_board, players, game_ui);
-            infinity_game.run();
-
-            delete infinity_board;
-            for (int i = 0; i < 2; ++i)
-                delete players[i];
-            delete[] players;
-            delete game_ui;
             break;
-        }
 
         case 13:
             cout << "\n=== Ultimate Tic-Tac-Toe (Bonus) ===\n";
