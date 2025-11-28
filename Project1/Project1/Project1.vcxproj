@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="diamond.cpp" />
+    <ClCompile Include="infinity_tictactoe.cpp" />
     <ClCompile Include="Misere_XO.cpp" />
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp" />
     <ClCompile Include="SUS.cpp" />
@@ -134,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h" />
     <ClInclude Include="diamond.h" />
+    <ClInclude Include="infinity-tictactoe.h" />
     <ClInclude Include="Misere_XO.h" />
     <ClInclude Include="Numerical_TicTacToe_Classes.h" />
     <ClInclude Include="SUS.h" />
