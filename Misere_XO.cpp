@@ -100,6 +100,7 @@ Move<char> *Misere_XO_UI::get_move(Player<char> *player)
     {
         cout << "\nPlease enter your move x and y (0 to 2): ";
         cin >> x >> y;
+         return new Move<char>(x, y, player->get_symbol());
     }
     else
     {   

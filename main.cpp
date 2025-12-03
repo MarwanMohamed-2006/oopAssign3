@@ -7,9 +7,11 @@
 #include "Tic_Tac_Toe.h"
 #include "Misere_XO.h"
 #include "infinity_tictactoe.h"
+#include "diamond.h"
 using namespace std;
 
-int main() {
+int main() 
+{
     system("cls");
 
     srand(static_cast<unsigned int>(time(0)));
@@ -94,20 +96,23 @@ int main() {
             for (int i = 0; i < 2; ++i)
                 delete players[i];
             delete[] players;
-            delete game_ui; // Added missing delete
-            break; // Added missing break statement
+            delete game_ui;
+            break;
         }
         case 7:
-            // Fixed commented code structure
-            /*
-            UI<char>* game_ui = new ();
-            Board<char>* diamond_board = new ();
+        {
+            UI<char>* game_ui = new diamond_UI();
+            Board<char>* game_board = new diamond_board();
             Player<char>** players = game_ui->setup_players();
-            GameManager<char> diamond_game(diamond_board, players, game_ui);
+            GameManager<char> diamond_game(game_board, players, game_ui);
             diamond_game.run();
-            */
-            cout << "\n=== Diamond Tic-Tac-Toe ===\n";
+            delete game_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
             break;
+        }
 
         case 8:
             cout << "\n=== 4x4 Tic-Tac-Toe ===\n";
