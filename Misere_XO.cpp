@@ -30,7 +30,7 @@ bool Misere_XO_Board::update_board(Move<char> *move)
     return false;
 }
 
-
+    
 
 bool Misere_XO_Board::_3rows(char sym)
 {
