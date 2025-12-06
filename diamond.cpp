@@ -1,4 +1,4 @@
-#include "diamond.h"
+﻿#include "diamond.h"
 
 diamond_board::diamond_board() : Board(7, 7)
 {
@@ -78,18 +78,18 @@ bool diamond_board::is_win(Player<char>* player)
 {
     return check_win(player->get_symbol());
 }
-
 bool diamond_board::check_win(char sym)
 {
-    bool _3inline[4] = { false };
-    bool _4inline[4] = { false };
+    vector<pair<int, int>> lines_of_3;  
+    vector<pair<int, int>> lines_of_4; 
+
 
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 5; j++) {
             if (j + 2 < 7) {
                 if (val_pos(i, j) && val_pos(i, j + 1) && val_pos(i, j + 2) &&
                     board[i][j] == sym && board[i][j + 1] == sym && board[i][j + 2] == sym) {
-                    _3inline[0] = true;
+                    lines_of_3.push_back({ 0, i * 10 + j });
                 }
             }
         }
@@ -98,7 +98,7 @@ bool diamond_board::check_win(char sym)
                 if (val_pos(i, j) && val_pos(i, j + 1) && val_pos(i, j + 2) && val_pos(i, j + 3) &&
                     board[i][j] == sym && board[i][j + 1] == sym &&
                     board[i][j + 2] == sym && board[i][j + 3] == sym) {
-                    _4inline[0] = true;
+                    lines_of_4.push_back({ 0, i * 10 + j });
                 }
             }
         }
@@ -109,7 +109,7 @@ bool diamond_board::check_win(char sym)
             if (i + 2 < 7) {
                 if (val_pos(i, j) && val_pos(i + 1, j) && val_pos(i + 2, j) &&
                     board[i][j] == sym && board[i + 1][j] == sym && board[i + 2][j] == sym) {
-                    _3inline[1] = true;
+                    lines_of_3.push_back({ 1, i * 10 + j });
                 }
             }
         }
@@ -118,7 +118,7 @@ bool diamond_board::check_win(char sym)
                 if (val_pos(i, j) && val_pos(i + 1, j) && val_pos(i + 2, j) && val_pos(i + 3, j) &&
                     board[i][j] == sym && board[i + 1][j] == sym &&
                     board[i + 2][j] == sym && board[i + 3][j] == sym) {
-                    _4inline[1] = true;
+                    lines_of_4.push_back({ 1, i * 10 + j });
                 }
             }
         }
@@ -129,52 +129,52 @@ bool diamond_board::check_win(char sym)
             if (i + 2 < 7 && j + 2 < 7) {
                 if (val_pos(i, j) && val_pos(i + 1, j + 1) && val_pos(i + 2, j + 2) &&
                     board[i][j] == sym && board[i + 1][j + 1] == sym && board[i + 2][j + 2] == sym) {
-                    _3inline[2] = true;
+                    lines_of_3.push_back({ 2, i * 10 + j }); 
+                   }
                 }
             }
-        }
-        for (int j = 0; j < 4; j++) {
-            if (i + 3 < 7 && j + 3 < 7) {
-                if (val_pos(i, j) && val_pos(i + 1, j + 1) && val_pos(i + 2, j + 2) && val_pos(i + 3, j + 3) &&
-                    board[i][j] == sym && board[i + 1][j + 1] == sym &&
-                    board[i + 2][j + 2] == sym && board[i + 3][j + 3] == sym) {
-                    _4inline[2] = true;
-                }
-            }
-        }
-    }
-
-    for (int i = 0; i < 5; i++) {
-        for (int j = 2; j < 7; j++) {
-            if (i + 2 < 7 && j - 2 >= 0) {
-                if (val_pos(i, j) && val_pos(i + 1, j - 1) && val_pos(i + 2, j - 2) &&
-                    board[i][j] == sym && board[i + 1][j - 1] == sym && board[i + 2][j - 2] == sym) {
-                    _3inline[3] = true;
-                }
-            }
-        }
-        for (int j = 3; j < 7; j++) {
-            if (i + 3 < 7 && j - 3 >= 0) {
-                if (val_pos(i, j) && val_pos(i + 1, j - 1) && val_pos(i + 2, j - 2) && val_pos(i + 3, j - 3) &&
-                    board[i][j] == sym && board[i + 1][j - 1] == sym &&
-                    board[i + 2][j - 2] == sym && board[i + 3][j - 3] == sym) {
-                    _4inline[3] = true;
-                }
-            }
-        }
-    }
-
-    for (int i = 0; i < 4; i++) {
-        if (_3inline[i]) {
             for (int j = 0; j < 4; j++) {
-                if (_4inline[j] && i != j) {
+                if (i + 3 < 7 && j + 3 < 7) {
+                    if (val_pos(i, j) && val_pos(i + 1, j + 1) && val_pos(i + 2, j + 2) && val_pos(i + 3, j + 3) &&
+                        board[i][j] == sym && board[i + 1][j + 1] == sym &&
+                        board[i + 2][j + 2] == sym && board[i + 3][j + 3] == sym) {
+                        lines_of_4.push_back({ 2, i * 10 + j });
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 2; j < 7; j++) {
+                if (i + 2 < 7 && j - 2 >= 0) {
+                    if (val_pos(i, j) && val_pos(i + 1, j - 1) && val_pos(i + 2, j - 2) &&
+                        board[i][j] == sym && board[i + 1][j - 1] == sym && board[i + 2][j - 2] == sym) {
+                        lines_of_3.push_back({ 3, i * 10 + j }); 
+                    }
+                }
+            }
+            for (int j = 3; j < 7; j++) {
+                if (i + 3 < 7 && j - 3 >= 0) {
+                    if (val_pos(i, j) && val_pos(i + 1, j - 1) && val_pos(i + 2, j - 2) && val_pos(i + 3, j - 3) &&
+                        board[i][j] == sym && board[i + 1][j - 1] == sym &&
+                        board[i][j - 2] == sym && board[i + 3][j - 3] == sym) {
+                        lines_of_4.push_back({ 3, i * 10 + j });
+                    }
+                }
+            }
+        }
+
+        for (auto& line3 : lines_of_3) {
+            for (auto& line4 : lines_of_4) {
+                if (line3.first != line4.first) {  
                     return true;
                 }
             }
         }
+
+        return false;
     }
-    return false;
-}
+ 
 diamond_UI::diamond_UI() : UI<char>("Welcome to Fizz Diamond game", 3)
 {
     cout << "Diamond game initialized with a 7x7 board.\n";
@@ -311,7 +311,7 @@ Move<char>* diamond_board::find_best_move(char sym1, char sym2)
     int best_score = -1000;
     int best_row = -1;
     int best_col = -1;
-    int depth = 3;
+    int depth = 3 ;
 
     for (int i = 0; i < 7; i++)
     {
