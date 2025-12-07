@@ -1,19 +1,17 @@
-//--------------------------------------- IMPLEMENTATION
 
 #include <iostream>
 #include <iomanip>
-#include <cctype>  // for toupper()
+
 #include "XO_Classes.h"
 
 using namespace std;
 
-//--------------------------------------- X_O_Board Implementation
 
 X_O_Board::X_O_Board() : Board(3, 3) {
-    // Initialize all cells with blank_symbol
     for (auto& row : board)
         for (auto& cell : row)
             cell = blank_symbol;
+    rb = vector<vector<char>>(3, vector<char>(3, blank_symbol));
 }
 
 bool X_O_Board::update_board(Move<char>* move) {
@@ -21,17 +19,18 @@ bool X_O_Board::update_board(Move<char>* move) {
     int y = move->get_y();
     char mark = move->get_symbol();
 
-    // Validate move and apply if valid
     if (!(x < 0 || x >= rows || y < 0 || y >= columns) &&
         (board[x][y] == blank_symbol || mark == 0)) {
 
-        if (mark == 0) { // Undo move
+        if (mark == 0) { 
             n_moves--;
             board[x][y] = blank_symbol;
+            rb[x][y] = blank_symbol;
         }
-        else {         // Apply move
+        else {         
             n_moves++;
-            board[x][y] = toupper(mark);
+            board[x][y] = '#';
+            rb[x][y] = toupper(mark);
         }
         return true;
     }
@@ -45,16 +44,14 @@ bool X_O_Board::is_win(Player<char>* player) {
         return a == b && b == c && a != blank_symbol;
         };
 
-    // Check rows and columns
     for (int i = 0; i < rows; ++i) {
-        if ((all_equal(board[i][0], board[i][1], board[i][2]) && board[i][0] == sym) ||
-            (all_equal(board[0][i], board[1][i], board[2][i]) && board[0][i] == sym))
+        if ((all_equal(rb[i][0], rb[i][1], rb[i][2]) && rb[i][0] == sym) ||
+            (all_equal(rb[0][i], rb[1][i], rb[2][i]) && rb[0][i] == sym))
             return true;
     }
 
-    // Check diagonals
-    if ((all_equal(board[0][0], board[1][1], board[2][2]) && board[1][1] == sym) ||
-        (all_equal(board[0][2], board[1][1], board[2][0]) && board[1][1] == sym))
+    if ((all_equal(rb[0][0], rb[1][1], rb[2][2]) && rb[1][1] == sym) ||
+        (all_equal(rb[0][2], rb[1][1], rb[2][0]) && rb[1][1] == sym))
         return true;
 
     return false;
@@ -68,9 +65,8 @@ bool X_O_Board::game_is_over(Player<char>* player) {
     return is_win(player) || is_draw(player);
 }
 
-//--------------------------------------- XO_UI Implementation
 
-XO_UI::XO_UI() : UI<char>("Weclome to FCAI X-O Game by Dr El-Ramly", 3) {}
+XO_UI::XO_UI() : UI<char>("Weclome to Memory X-O Game by Fizz", 3) {}
 
 Player<char>* XO_UI::create_player(string& name, char symbol, PlayerType type) {
     // Create player based on type

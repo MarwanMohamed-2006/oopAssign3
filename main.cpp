@@ -36,7 +36,7 @@ int main()
         cout << "12. Infinity Tic-Tac-Toe (Group)\n";
         cout << "13. Ultimate Tic-Tac-Toe (Bonus)\n";
         cout << "14. Memory Tic-Tac-Toe (Bonus)\n";
-        cout << "15. Exit\n";
+        cout << "0. Exit\n";
         cout << "==============================\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -44,26 +44,15 @@ int main()
         switch (choice)
         {
         case 1: {
-            UI<char>* game_ui = new XO_UI();
-            Board<char>* xo_board = new X_O_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> x_o_game(xo_board, players, game_ui);
-            x_o_game.run();
-
-            delete xo_board;
-            for (int i = 0; i < 2; ++i)
-                delete players[i];
-            delete[] players;
-            delete game_ui; // Added missing delete
+            cout << "\n=== SUS Game ===\n";
             break;
+            
         }
         case 2:
-            cout << "\n=== SUS Game ===\n";
+            cout << "\n=== Four-in-a-Row ===\n";
             break;
 
         case 3:
-            cout << "\n=== Four-in-a-Row ===\n";
-            break;
 
         case 4:
         {
@@ -148,18 +137,48 @@ int main()
             Player<char>** players = game_ui->setup_players();
             GameManager<char> infinity_game(infinity_board, players, game_ui);
             infinity_game.run();
+
+            delete infinity_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
             break;
         }
 
         case 13:
-            cout << "\n=== Ultimate Tic-Tac-Toe (Bonus) ===\n";
+        {
+           /* UI<char>* game_ui = new ();
+            Board<char>* num_board = new ();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> num_game(num_board, players, game_ui);
+            num_game.run();
+
+            delete num_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
             break;
+            */
+        }
 
         case 14:
-            cout << "\n=== Memory Tic-Tac-Toe (Bonus) ===\n";
-            break;
+        {
+            UI<char>* game_ui = new XO_UI();
+            Board<char>* xo_board = new X_O_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> x_o_game(xo_board, players, game_ui);
+            x_o_game.run();
 
-        case 15:
+            delete xo_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
+            break;
+        }
+        case 0:
             cout << "GoodBye\n";
             break;
 
@@ -167,6 +186,6 @@ int main()
             cout << "Invalid choice, try again!\n";
             break;
         }
-    } while (choice != 15);
+    } while (choice != 0    );
     return 0;
 }
