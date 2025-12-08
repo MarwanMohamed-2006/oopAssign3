@@ -8,9 +8,10 @@
 #include "Misere_XO.h"
 #include "infinity_tictactoe.h"
 #include "diamond.h"
+#include "Word_Tic-tac-toe.h"
 using namespace std;
 
-int main() 
+int main()
 {
     system("cls");
 
@@ -46,7 +47,7 @@ int main()
         case 1: {
             cout << "\n=== SUS Game ===\n";
             break;
-            
+
         }
         case 2:
             cout << "\n=== Four-in-a-Row ===\n";
@@ -70,9 +71,48 @@ int main()
             break;
         }
         case 5:
-            cout << "\n=== Word Tic-Tac-Toe ===\n";
-            break;
+        {
+            WordTicTacToe_Board::loadDictionary();
+            WordTicTacToe_Board game;
+            WordTicTacToe_UI ui;
 
+            Player<char>* players[2];
+            string names[2];
+
+            // إنشاء اللاعبين
+            for (int i = 0; i < 2; i++) {
+                cout << "Enter Player " << i + 1 << " name: ";
+                cin >> names[i];
+                players[i] = ui.create_player(names[i], (i == 0 ? 'X' : 'O'), PlayerType::HUMAN);
+            }
+
+            int turn = 0;
+            while (true) {
+                game.printBoard();
+                Move<char>* move = ui.get_move(players[turn]);
+                if (!game.update_board(move)) {
+                    cout << "Invalid move, try again.\n";
+                    delete move;
+                    continue;
+                }
+                delete move;
+
+				if (game.is_win(players[turn])) {
+					game.printBoard();
+					cout << players[turn]->get_name() << " wins!\n";
+					break;
+				}
+
+				if (game.is_draw(players[turn])) {
+					game.printBoard();
+					cout << "It's a draw!\n";
+					break;
+				}
+
+                turn = 1 - turn;  // تغيير الدور
+            }
+            break;
+        }
         case 6:
         {
             UI<char>* game_ui = new Misere_XO_UI();
@@ -148,19 +188,19 @@ int main()
 
         case 13:
         {
-           /* UI<char>* game_ui = new ();
-            Board<char>* num_board = new ();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> num_game(num_board, players, game_ui);
-            num_game.run();
+            /* UI<char>* game_ui = new ();
+             Board<char>* num_board = new ();
+             Player<char>** players = game_ui->setup_players();
+             GameManager<char> num_game(num_board, players, game_ui);
+             num_game.run();
 
-            delete num_board;
-            for (int i = 0; i < 2; ++i)
-                delete players[i];
-            delete[] players;
-            delete game_ui;
-            break;
-            */
+             delete num_board;
+             for (int i = 0; i < 2; ++i)
+                 delete players[i];
+             delete[] players;
+             delete game_ui;
+             break;
+             */
         }
 
         case 14:
@@ -186,6 +226,6 @@ int main()
             cout << "Invalid choice, try again!\n";
             break;
         }
-    } while (choice != 0    );
+    } while (choice != 0);
     return 0;
 }
