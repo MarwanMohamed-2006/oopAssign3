@@ -148,8 +148,24 @@ int main() {
             break;
         }
         case 11:
+		{
             cout << "\n=== Obstacles Tic-Tac-Toe (Group) ===\n";
-            break;
+    
+            Obstacles_UI* ui = new Obstacles_UI();
+            Obstacles_Board* board = new Obstacles_Board();
+    
+            ui->set_obstacles_board(board);
+    
+            Player<char>** players = ui->setup_players();
+            GameManager<char> game(board, players, ui);
+            game.run();
+    
+           delete board;
+           for (int i = 0; i < 2; ++i) delete players[i];
+           delete[] players;
+           delete ui;
+           break;
+       }
 
         case 12:
             cout << "\n=== Infinity Tic-Tac-Toe (Group) ===\n";
