@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// Constructor
+
 InfinityTicTacToe::InfinityTicTacToe() {
     resetGame();
 }
