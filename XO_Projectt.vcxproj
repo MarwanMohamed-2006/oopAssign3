@@ -130,6 +130,7 @@
     <ClCompile Include="Pyramid_UI.cpp" />
     <ClCompile Include="SUS.cpp" />
     <ClCompile Include="Tic_Tac_Toe.cpp" />
+    <ClCompile Include="Ultimate_XO.cpp" />
     <ClCompile Include="XO_Classes.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="Pyramid_UI.h" />
     <ClInclude Include="SUS.h" />
     <ClInclude Include="Tic_Tac_Toe.h" />
+    <ClInclude Include="Ultimate_XO.h" />
     <ClInclude Include="XO_Classes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
