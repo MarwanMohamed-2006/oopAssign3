@@ -1,57 +1,62 @@
-
-
 #ifndef INFINITY_TICTACTOE_H
 #define INFINITY_TICTACTOE_H
 
 #include "BoardGame_Classes.h"
-#include <queue>
-using namespace std;
+#include <vector>
+#include <string>
+#include <deque>
 
-
-class Infinity_Board : public Board<char> {
+class InfinityTicTacToe {
 private:
-    char blank_symbol = '.';
-    queue<pair<int, int>> move_history; 
+    // Game state
+    std::vector<std::vector<char>> board;
+    std::deque<std::pair<int, int>> moveHistory;
+    char currentPlayer;
+    int moveCount;
+    bool gameEnded;
+    char winner;
+    bool isComputerOpponent;
+    char computerSymbol;
+
+    // Constants
+    static const int GRID_SIZE = 3;
+    static const int MOVES_BEFORE_REMOVAL = 3;
+
+    // AI helper methods
+    std::pair<int, int> getComputerMove();
+    std::pair<int, int> findWinningMove(char player);
+    std::pair<int, int> findBestMove();
+    int evaluatePosition(int row, int col, char player);
 
 public:
-   
-    Infinity_Board();
+    // Constructor
+    InfinityTicTacToe();
 
-   
-    bool update_board(Move<char>* move);
+    // Game control
+    void startGame(bool vsComputer = false);
+    bool makeMove(int row, int col);
+    bool makeComputerMove();
+    void processOldestMoveRemoval();
+    bool checkWin(int row, int col) const;
+    bool isBoardFull() const;
+    void switchPlayer();
+    void resetGame();
 
-   
-    bool is_win(Player<char>* player);
+    // Getters
+    char getCurrentPlayer() const;
+    char getCell(int row, int col) const;
+    bool isGameEnded() const;
+    char getWinner() const;
+    int getMoveCount() const;
+    bool isComputerTurn() const;
 
-   
-    bool is_lose(Player<char>*) { return false; }
+    // Display
+    void displayBoard() const;
+    std::string getBoardString() const;
 
-   
-    bool is_draw(Player<char>* player);
-
-    
-    bool game_is_over(Player<char>* player);
+    // Validation
+    bool isValidMove(int row, int col) const;
+    bool isPositionEmpty(int row, int col) const;
 };
 
-
-class Infinity_UI : public UI<char> {
-public:
-    
-    Infinity_UI() : UI<char>("Welcome to FCAI Infinity Tic-Tac-Toe", 3) {
-        cout << "\nGame Rules:\n";
-        cout << "- Play on a 3x3 grid\n";
-        cout << "- After every 3 moves, the OLDEST mark disappears!\n";
-        cout << "- Win by getting 3 in a row before your marks vanish\n";
-        cout << "- Strategy is key - timing matters!\n\n";
-    }
-
-   
-    ~Infinity_UI() {}
-
-    Player<char>* create_player(string& name, char symbol, PlayerType type);
-
-  
-    virtual Move<char>* get_move(Player<char>* player);
-};
-
-#endif
+#endif // INFINITY_TICTACTOE_H

@@ -1,139 +1,400 @@
+#include "infinity_tictactoe.h"
 #include <iostream>
 #include <iomanip>
-#include <cctype>
-#include <vector>
-#include "infinity_tictactoe.h"
+#include <stdexcept>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
-Infinity_Board::Infinity_Board() : Board(3, 3) {
-    for (auto& row : board)
-        for (auto& cell : row)
-            cell = blank_symbol;
+// Constructor
+InfinityTicTacToe::InfinityTicTacToe() {
+    resetGame();
 }
 
-bool Infinity_Board::update_board(Move<char>* move) {
-    int x = move->get_x();
-    int y = move->get_y();
-    char mark = move->get_symbol();
+// Initialize or reset the game
+void InfinityTicTacToe::resetGame() {
+    board = vector<vector<char>>(GRID_SIZE, vector<char>(GRID_SIZE, ' '));
+    moveHistory.clear();
+    currentPlayer = 'X';
+    moveCount = 0;
+    gameEnded = false;
+    winner = ' ';
+    isComputerOpponent = false;
+    computerSymbol = 'O';
+}
 
-    if (x < 0 || x >= rows || y < 0 || y >= columns) {
-        cout << "Invalid coordinates! Must be between 0 and 2.\n";
+// Start a new game
+void InfinityTicTacToe::startGame(bool vsComputer) {
+    resetGame();
+    isComputerOpponent = vsComputer;
+
+    cout << "=== Infinity Tic-Tac-Toe ===" << endl;
+    cout << "Rules: After every " << MOVES_BEFORE_REMOVAL << " moves, the oldest mark disappears!" << endl;
+
+    if (isComputerOpponent) {
+        cout << "You are X, Computer is O" << endl;
+    }
+
+    cout << "Player X starts. Good luck!" << endl << endl;
+    displayBoard();
+}
+
+// Make a move at specified position
+bool InfinityTicTacToe::makeMove(int row, int col) {
+    if (gameEnded) {
+        cout << "Game has ended. Start a new game!" << endl;
         return false;
     }
 
-    if (board[x][y] != blank_symbol) {
-        cout << "Cell already occupied!\n";
+    if (!isValidMove(row, col)) {
+        cout << "Invalid position! Please choose row and column between 0-2." << endl;
         return false;
     }
 
-    board[x][y] = toupper(mark);
-
-    n_moves++;
-    move_history.push({ x, y });
-
-    cout << "Move " << n_moves << ": '" << toupper(mark)
-        << "' placed at (" << x << ", " << y << ")\n";
-
-    if (move_history.size() > 3) {
-        auto oldest = move_history.front();
-        move_history.pop();
-
-        int old_x = oldest.first;
-        int old_y = oldest.second;
-        char removed_symbol = board[old_x][old_y];
-
-        board[old_x][old_y] = blank_symbol;
-
-        cout << ">>> Oldest mark '" << removed_symbol
-            << "' at (" << old_x << ", " << old_y << ") has vanished!\n";
+    if (!isPositionEmpty(row, col)) {
+        cout << "Position already occupied!" << endl;
+        return false;
     }
+
+    // Make the move
+    board[row][col] = currentPlayer;
+    moveHistory.push_back({ row, col });
+    moveCount++;
+
+    cout << "Player " << currentPlayer << " placed at (" << row << ", " << col << ")" << endl;
+
+    // Check for win immediately after the move
+    if (checkWin(row, col)) {
+        gameEnded = true;
+        winner = currentPlayer;
+        displayBoard();
+        cout << "\n*** Player " << currentPlayer << " wins! ***" << endl;
+        return true;
+    }
+
+    // Check if board is full (draw)
+    if (isBoardFull()) {
+        gameEnded = true;
+        winner = 'D';
+        displayBoard();
+        cout << "\n*** It's a draw! ***" << endl;
+        return true;
+    }
+
+    // Switch to next player BEFORE removing moves
+    switchPlayer();
+
+    // Remove oldest move after every 3 moves (starting from move 4)
+    // This happens AFTER switching, so removal is fair to both players
+    if (moveCount > MOVES_BEFORE_REMOVAL &&
+        (moveCount - MOVES_BEFORE_REMOVAL) % MOVES_BEFORE_REMOVAL == 0) {
+        processOldestMoveRemoval();
+    }
+
+    displayBoard();
 
     return true;
 }
 
-bool Infinity_Board::is_win(Player<char>* player) {
-    const char sym = player->get_symbol();
-
-    auto all_equal = [&](char a, char b, char c) {
-        return a == b && b == c && a == sym;
-        };
-
-    for (int i = 0; i < rows; ++i) {
-        if (all_equal(board[i][0], board[i][1], board[i][2]))
-            return true;
+// Computer makes a move
+bool InfinityTicTacToe::makeComputerMove() {
+    if (!isComputerOpponent || currentPlayer != computerSymbol || gameEnded) {
+        return false;
     }
 
-    for (int j = 0; j < columns; ++j) {
-        if (all_equal(board[0][j], board[1][j], board[2][j]))
-            return true;
+    cout << "\nComputer is thinking..." << endl;
+
+    pair<int, int> move = getComputerMove();
+    return makeMove(move.first, move.second);
+}
+
+// AI: Get computer's move
+pair<int, int> InfinityTicTacToe::getComputerMove() {
+    // Strategy 1: Try to win
+    pair<int, int> winMove = findWinningMove(computerSymbol);
+    if (winMove.first != -1) {
+        return winMove;
     }
 
-    if (all_equal(board[0][0], board[1][1], board[2][2]))
-        return true;
-    if (all_equal(board[0][2], board[1][1], board[2][0]))
-        return true;
-
-    return false;
-}
-
-bool Infinity_Board::is_draw(Player<char>* player) {
-    if (n_moves >= 50) {
-        cout << "\n=== Game reached move limit (50 moves). It's a draw! ===\n";
-        return true;
+    // Strategy 2: Block opponent's winning move
+    char opponent = (computerSymbol == 'X') ? 'O' : 'X';
+    pair<int, int> blockMove = findWinningMove(opponent);
+    if (blockMove.first != -1) {
+        return blockMove;
     }
-    return false;
+
+    // Strategy 3: Find best strategic move
+    return findBestMove();
 }
 
-bool Infinity_Board::game_is_over(Player<char>* player) {
-    return is_win(player) || is_draw(player);
-}
+// Find a winning move for the given player
+pair<int, int> InfinityTicTacToe::findWinningMove(char player) {
+    for (int r = 0; r < GRID_SIZE; r++) {
+        for (int c = 0; c < GRID_SIZE; c++) {
+            if (board[r][c] == ' ') {
+                // Try this move
+                board[r][c] = player;
+                bool wins = checkWin(r, c);
+                board[r][c] = ' '; // Undo
 
-
-Player<char>* Infinity_UI::create_player(string& name, char symbol, PlayerType type) {
-    cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer")
-        << " player: " << name << " (" << symbol << ")\n";
-
-    return new Player<char>(name, symbol, type);
-}
-
-Move<char>* Infinity_UI::get_move(Player<char>* player) {
-    int x, y;
-
-    if (player->get_type() == PlayerType::HUMAN) {
-        cout << "\n" << player->get_name() << "'s turn ("
-            << player->get_symbol() << ")\n";
-        cout << "Enter row (0-2): ";
-        cin >> x;
-        cout << "Enter column (0-2): ";
-        cin >> y;
-    }
-    else if (player->get_type() == PlayerType::COMPUTER) {
-        vector<vector<char>> board_matrix = player->get_board_ptr()->get_board_matrix();
-        vector<pair<int, int>> empty_cells;
-
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 3; ++j) {
-                if (board_matrix[i][j] == '.') {
-                    empty_cells.push_back({ i, j });
+                if (wins) {
+                    return { r, c };
                 }
             }
         }
-
-        if (!empty_cells.empty()) {
-            int idx = rand() % empty_cells.size();
-            x = empty_cells[idx].first;
-            y = empty_cells[idx].second;
-        }
-        else {
-            x = rand() % 3;
-            y = rand() % 3;
-        }
-
-        cout << "\nComputer " << player->get_name() << " ("
-            << player->get_symbol() << ") plays at (" << x << ", " << y << ")\n";
     }
-
-    return new Move<char>(x, y, player->get_symbol());
+    return { -1, -1 }; // No winning move found
 }
 
+// Find the best strategic move
+pair<int, int> InfinityTicTacToe::findBestMove() {
+    int bestScore = -1000;
+    pair<int, int> bestMove = { -1, -1 };
+
+    // Priority positions: center > corners > edges
+    vector<pair<int, int>> moveOrder = {
+        {1, 1}, // Center
+        {0, 0}, {0, 2}, {2, 0}, {2, 2}, // Corners
+        {0, 1}, {1, 0}, {1, 2}, {2, 1}  // Edges
+    };
+
+    for (auto pos : moveOrder) {
+        int r = pos.first;
+        int c = pos.second;
+
+        if (board[r][c] == ' ') {
+            int score = evaluatePosition(r, c, computerSymbol);
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = { r, c };
+            }
+        }
+    }
+
+    // If no strategic move found, pick first available
+    if (bestMove.first == -1) {
+        for (int r = 0; r < GRID_SIZE; r++) {
+            for (int c = 0; c < GRID_SIZE; c++) {
+                if (board[r][c] == ' ') {
+                    return { r, c };
+                }
+            }
+        }
+    }
+
+    return bestMove;
+}
+
+// Evaluate how good a position is
+int InfinityTicTacToe::evaluatePosition(int row, int col, char player) {
+    int score = 0;
+
+    // Center is most valuable
+    if (row == 1 && col == 1) score += 4;
+
+    // Corners are next
+    if ((row == 0 || row == 2) && (col == 0 || col == 2)) score += 3;
+
+    // Count how many lines this position contributes to
+    int lineCount = 0;
+
+    // Check row potential
+    int friendlyInRow = 0, emptyInRow = 0;
+    for (int c = 0; c < GRID_SIZE; c++) {
+        if (board[row][c] == player) friendlyInRow++;
+        else if (board[row][c] == ' ') emptyInRow++;
+    }
+    if (emptyInRow > 0) score += friendlyInRow;
+
+    // Check column potential
+    int friendlyInCol = 0, emptyInCol = 0;
+    for (int r = 0; r < GRID_SIZE; r++) {
+        if (board[r][col] == player) friendlyInCol++;
+        else if (board[r][col] == ' ') emptyInCol++;
+    }
+    if (emptyInCol > 0) score += friendlyInCol;
+
+    // Check diagonals if applicable
+    if (row == col) {
+        int friendlyInDiag = 0, emptyInDiag = 0;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            if (board[i][i] == player) friendlyInDiag++;
+            else if (board[i][i] == ' ') emptyInDiag++;
+        }
+        if (emptyInDiag > 0) score += friendlyInDiag;
+    }
+
+    if (row + col == GRID_SIZE - 1) {
+        int friendlyInAntiDiag = 0, emptyInAntiDiag = 0;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            if (board[i][GRID_SIZE - 1 - i] == player) friendlyInAntiDiag++;
+            else if (board[i][GRID_SIZE - 1 - i] == ' ') emptyInAntiDiag++;
+        }
+        if (emptyInAntiDiag > 0) score += friendlyInAntiDiag;
+    }
+
+    return score;
+}
+
+// Remove the oldest move from the board
+void InfinityTicTacToe::processOldestMoveRemoval() {
+    if (moveHistory.size() <= MOVES_BEFORE_REMOVAL) return;
+
+    int removeIndex = moveHistory.size() - MOVES_BEFORE_REMOVAL - 1;
+
+    auto oldestMove = moveHistory[removeIndex];
+    int row = oldestMove.first;
+    int col = oldestMove.second;
+
+    cout << "\n>>> Oldest move at (" << row << ", " << col
+        << ") removed! <<<" << endl;
+    board[row][col] = ' ';
+}
+
+// Check if the last move resulted in a win
+bool InfinityTicTacToe::checkWin(int row, int col) const {
+    char player = board[row][col];
+    if (player == ' ') return false;
+
+    // Check row
+    bool rowWin = true;
+    for (int c = 0; c < GRID_SIZE; c++) {
+        if (board[row][c] != player) {
+            rowWin = false;
+            break;
+        }
+    }
+    if (rowWin) return true;
+
+    // Check column
+    bool colWin = true;
+    for (int r = 0; r < GRID_SIZE; r++) {
+        if (board[r][col] != player) {
+            colWin = false;
+            break;
+        }
+    }
+    if (colWin) return true;
+
+    // Check main diagonal
+    if (row == col) {
+        bool diag1Win = true;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            if (board[i][i] != player) {
+                diag1Win = false;
+                break;
+            }
+        }
+        if (diag1Win) return true;
+    }
+
+    // Check anti-diagonal
+    if (row + col == GRID_SIZE - 1) {
+        bool diag2Win = true;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            if (board[i][GRID_SIZE - 1 - i] != player) {
+                diag2Win = false;
+                break;
+            }
+        }
+        if (diag2Win) return true;
+    }
+
+    return false;
+}
+
+// Check if board is full
+bool InfinityTicTacToe::isBoardFull() const {
+    for (int r = 0; r < GRID_SIZE; r++) {
+        for (int c = 0; c < GRID_SIZE; c++) {
+            if (board[r][c] == ' ') {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// Switch to the next player
+void InfinityTicTacToe::switchPlayer() {
+    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+}
+
+// Display the current board state
+void InfinityTicTacToe::displayBoard() const {
+    cout << "\nCurrent Board (Moves: " << moveCount << "):" << endl;
+    cout << "  0   1   2" << endl;
+
+    for (int r = 0; r < GRID_SIZE; r++) {
+        cout << r << " ";
+        for (int c = 0; c < GRID_SIZE; c++) {
+            cout << board[r][c];
+            if (c < GRID_SIZE - 1) cout << " | ";
+        }
+        cout << endl;
+
+        if (r < GRID_SIZE - 1) {
+            cout << "  ---------" << endl;
+        }
+    }
+    cout << endl;
+}
+
+// Get board as string for display
+string InfinityTicTacToe::getBoardString() const {
+    string result = "  0   1   2\n";
+
+    for (int r = 0; r < GRID_SIZE; r++) {
+        result += to_string(r) + " ";
+        for (int c = 0; c < GRID_SIZE; c++) {
+            result += board[r][c];
+            if (c < GRID_SIZE - 1) result += " | ";
+        }
+        result += "\n";
+
+        if (r < GRID_SIZE - 1) {
+            result += "  ---------\n";
+        }
+    }
+
+    return result;
+}
+
+// Validation functions
+bool InfinityTicTacToe::isValidMove(int row, int col) const {
+    return row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE;
+}
+
+bool InfinityTicTacToe::isPositionEmpty(int row, int col) const {
+    return board[row][col] == ' ';
+}
+
+// Getter functions
+char InfinityTicTacToe::getCurrentPlayer() const {
+    return currentPlayer;
+}
+
+char InfinityTicTacToe::getCell(int row, int col) const {
+    if (!isValidMove(row, col)) {
+        throw out_of_range("Invalid board position");
+    }
+    return board[row][col];
+}
+
+bool InfinityTicTacToe::isGameEnded() const {
+    return gameEnded;
+}
+
+char InfinityTicTacToe::getWinner() const {
+    return winner;
+}
+
+int InfinityTicTacToe::getMoveCount() const {
+    return moveCount;
+}
+
+bool InfinityTicTacToe::isComputerTurn() const {
+    return isComputerOpponent && currentPlayer == computerSymbol;
+}
