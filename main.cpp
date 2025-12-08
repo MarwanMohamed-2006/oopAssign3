@@ -8,6 +8,7 @@
 #include "Misere_XO.h"
 #include "Infinity_Board..h"
 #include "diamond.h"
+#include "Ultimate_XO.h"
 #include "Word_Tic-tac-toe.h"
 #include "Four4_Board.h"
 #include "Four4_UI.h"
@@ -263,19 +264,18 @@ int main()
 
         case 13:
         {
-            /* UI<char>* game_ui = new ();
-             Board<char>* num_board = new ();
-             Player<char>** players = game_ui->setup_players();
-             GameManager<char> num_game(num_board, players, game_ui);
-             num_game.run();
+            UI<char>* game_ui = new Ultimate_XO_UI();
+            Board<char>* ultimate_board = new Ultimate_XO_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> ultimate_game(ultimate_board, players, game_ui);
+            ultimate_game.run();
 
-             delete num_board;
-             for (int i = 0; i < 2; ++i)
-                 delete players[i];
-             delete[] players;
-             delete game_ui;
-             break;
-             */
+            delete ultimate_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
+            break;
         }
 
         case 14:
