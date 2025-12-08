@@ -6,7 +6,7 @@
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
 #include "Misere_XO.h"
-#include "infinity_tictactoe.h"
+#include "Infinity_Board..h"
 #include "diamond.h"
 #include "Word_Tic-tac-toe.h"
 #include "Four4_Board.h"

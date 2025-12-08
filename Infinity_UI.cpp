@@ -1,4 +1,4 @@
-#include "infinity_tictactoe.h"
+#include "Infinity_Board..h"
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
