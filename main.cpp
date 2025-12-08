@@ -9,6 +9,10 @@
 #include "infinity_tictactoe.h"
 #include "diamond.h"
 #include "Word_Tic-tac-toe.h"
+#include "Four4_Board.h"
+#include "Four4_UI.h"
+#include "Pyramid_Board.h"
+#include "Pyramid_UI.h"
 using namespace std;
 
 int main()
