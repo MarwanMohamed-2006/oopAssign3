@@ -6,12 +6,18 @@
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
 #include "Misere_XO.h"
-#include "infinity_tictactoe.h"
+#include "Infinity_Board..h"
 #include "diamond.h"
 #include "Ultimate_XO.h"
+#include "Word_Tic-tac-toe.h"
+#include "Four4_Board.h"
+#include "Four4_UI.h"
+#include "Pyramid_Board.h"
+#include "Pyramid_UI.h"
+#include "Obstacles_TicTacToe_Classes.h"
 using namespace std;
 
-int main() 
+int main()
 {
     system("cls");
 
@@ -47,7 +53,7 @@ int main()
         case 1: {
             cout << "\n=== SUS Game ===\n";
             break;
-            
+
         }
         case 2:
             cout << "\n=== Four-in-a-Row ===\n";
@@ -67,13 +73,51 @@ int main()
             for (int i = 0; i < 2; ++i)
                 delete players[i];
             delete[] players;
-            delete game_ui; // Added missing delete
+            delete game_ui; 
             break;
         }
         case 5:
-            cout << "\n=== Word Tic-Tac-Toe ===\n";
-            break;
+        {
+            WordTicTacToe_Board::loadDictionary();
+            WordTicTacToe_Board game;
+            WordTicTacToe_UI ui;
 
+            Player<char>* players[2];
+            string names[2];
+
+            for (int i = 0; i < 2; i++) {
+                cout << "Enter Player " << i + 1 << " name: ";
+                cin >> names[i];
+                players[i] = ui.create_player(names[i], (i == 0 ? 'X' : 'O'), PlayerType::HUMAN);
+            }
+
+            int turn = 0;
+            while (true) {
+                game.printBoard();
+                Move<char>* move = ui.get_move(players[turn]);
+                if (!game.update_board(move)) {
+                    cout << "Invalid move, try again.\n";
+                    delete move;
+                    continue;
+                }
+                delete move;
+
+				if (game.is_win(players[turn])) {
+					game.printBoard();
+					cout << players[turn]->get_name() << " wins!\n";
+					break;
+				}
+
+				if (game.is_draw(players[turn])) {
+					game.printBoard();
+					cout << "It's a draw!\n";
+					break;
+				}
+
+                turn = 1 - turn;  
+            }
+            break;
+        }
         case 6:
         {
             UI<char>* game_ui = new Misere_XO_UI();
@@ -105,12 +149,35 @@ int main()
         }
 
         case 8:
-            cout << "\n=== 4x4 Tic-Tac-Toe ===\n";
-            break;
+            {
+             UI<char>* game_ui = new Four4_UI();
+             Board<char>* four4_board = new Four4_Board();
+             Player<char>** players = game_ui->setup_players();
+             GameManager<char> four4_game(four4_board, players, game_ui);
+             four4_game.run();
 
+              delete four4_board;
+              for (int i = 0; i < 2; ++i) delete players[i];
+              delete[] players;
+              delete game_ui;
+         break;
+            
+        }
         case 9:
-            cout << "\n=== Pyramid Tic-Tac-Toe ===\n";
-            break;
+            {
+         UI<char>* game_ui = new Pyramid_UI();
+         Board<char>* pyr_board = new Pyramid_Board();
+        Player<char>** players = game_ui->setup_players();
+        GameManager<char> pyr_game(pyr_board, players, game_ui);
+         pyr_game.run();
+
+        delete pyr_board;
+        for (int i = 0; i < 2; ++i) delete players[i];
+         delete[] players;
+         delete game_ui;
+         break;
+            
+        }
 
         case 10:
         {
@@ -128,22 +195,70 @@ int main()
             break;
         }
         case 11:
+		{
             cout << "\n=== Obstacles Tic-Tac-Toe (Group) ===\n";
-            break;
+    
+            Obstacles_UI* ui = new Obstacles_UI();
+            Obstacles_Board* board = new Obstacles_Board();
+    
+            ui->set_obstacles_board(board);
+    
+            Player<char>** players = ui->setup_players();
+            GameManager<char> game(board, players, ui);
+            game.run();
+    
+           delete board;
+           for (int i = 0; i < 2; ++i) delete players[i];
+           delete[] players;
+           delete ui;
+           break;
+        }
 
         case 12:
         {
-            UI<char>* game_ui = new Infinity_UI();
-            Board<char>* infinity_board = new Infinity_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> infinity_game(infinity_board, players, game_ui);
-            infinity_game.run();
+            cout << "\n=== Infinity Tic-Tac-Toe ===\n";
+            cout << "Rules: After every 3 moves, the oldest mark disappears!\n";
 
-            delete infinity_board;
-            for (int i = 0; i < 2; ++i)
-                delete players[i];
-            delete[] players;
-            delete game_ui;
+            // Ask if player wants to play against computer
+            char choice;
+            cout << "Play against computer? (y/n): ";
+            cin >> choice;
+            bool vsComputer = (choice == 'y' || choice == 'Y');
+
+            InfinityTicTacToe game;
+            game.startGame(vsComputer);
+
+            int row, col;
+
+            while (!game.isGameEnded()) {
+                // Check if it's computer's turn
+                if (game.isComputerTurn()) {
+                    game.makeComputerMove();
+                }
+                else {
+                    cout << "\nPlayer " << game.getCurrentPlayer() << "'s turn." << endl;
+                    cout << "Enter row and column (0-2): ";
+
+                    if (!(cin >> row >> col)) {
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                        cout << "Invalid input! Please enter two numbers (0-2)." << endl;
+                        continue;
+                    }
+
+                    game.makeMove(row, col);
+                }
+            }
+
+            char winner = game.getWinner();
+            if (winner == 'D') {
+                cout << "Game ended in a draw!" << endl;
+            }
+            else {
+                cout << "Player " << winner << " is the winner!" << endl;
+            }
+
+            cout << "Total moves made: " << game.getMoveCount() << endl;
             break;
         }
 
@@ -186,6 +301,6 @@ int main()
             cout << "Invalid choice, try again!\n";
             break;
         }
-    } while (choice != 0    );
+    } while (choice != 0);
     return 0;
 }

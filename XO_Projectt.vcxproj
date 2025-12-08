@@ -122,7 +122,7 @@
     <ClCompile Include="diamond.cpp" />
     <ClCompile Include="Four4_Board.cpp" />
     <ClCompile Include="Four4_UI.cpp" />
-    <ClCompile Include="infinity_tictactoe.cpp" />
+    <ClCompile Include="Infinity_UI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Misere_XO.cpp" />
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp" />
@@ -131,6 +131,7 @@
     <ClCompile Include="SUS.cpp" />
     <ClCompile Include="Tic_Tac_Toe.cpp" />
     <ClCompile Include="Ultimate_XO.cpp" />
+    <ClCompile Include="Word_Tic-tac-toe.cpp" />
     <ClCompile Include="XO_Classes.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +139,7 @@
     <ClInclude Include="diamond.h" />
     <ClInclude Include="Four4_Board.h" />
     <ClInclude Include="Four4_UI.h" />
-    <ClInclude Include="infinity_tictactoe.h" />
+    <ClInclude Include="Infinity_Board..h" />
     <ClInclude Include="Misere_XO.h" />
     <ClInclude Include="Numerical_TicTacToe_Classes.h" />
     <ClInclude Include="Pyramid_Board.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="SUS.h" />
     <ClInclude Include="Tic_Tac_Toe.h" />
     <ClInclude Include="Ultimate_XO.h" />
+    <ClInclude Include="Word_Tic-tac-toe.h" />
     <ClInclude Include="XO_Classes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
