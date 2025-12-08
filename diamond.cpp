@@ -1,4 +1,5 @@
 ﻿#include "diamond.h"
+/// <summary>
 
 diamond_board::diamond_board() : Board(7, 7)
 {

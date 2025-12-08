@@ -6,7 +6,7 @@
 #include "Numerical_TicTacToe_Classes.h"
 #include "Tic_Tac_Toe.h"
 #include "Misere_XO.h"
-#include "infinity_tictactoe.h"
+#include "Infinity_Board..h"
 #include "diamond.h"
 #include "Word_Tic-tac-toe.h"
 #include "Four4_Board.h"
@@ -215,17 +215,49 @@ int main()
 
         case 12:
         {
-            UI<char>* game_ui = new Infinity_UI();
-            Board<char>* infinity_board = new Infinity_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> infinity_game(infinity_board, players, game_ui);
-            infinity_game.run();
+            cout << "\n=== Infinity Tic-Tac-Toe ===\n";
+            cout << "Rules: After every 3 moves, the oldest mark disappears!\n";
 
-            delete infinity_board;
-            for (int i = 0; i < 2; ++i)
-                delete players[i];
-            delete[] players;
-            delete game_ui;
+            // Ask if player wants to play against computer
+            char choice;
+            cout << "Play against computer? (y/n): ";
+            cin >> choice;
+            bool vsComputer = (choice == 'y' || choice == 'Y');
+
+            InfinityTicTacToe game;
+            game.startGame(vsComputer);
+
+            int row, col;
+
+            while (!game.isGameEnded()) {
+                // Check if it's computer's turn
+                if (game.isComputerTurn()) {
+                    game.makeComputerMove();
+                }
+                else {
+                    cout << "\nPlayer " << game.getCurrentPlayer() << "'s turn." << endl;
+                    cout << "Enter row and column (0-2): ";
+
+                    if (!(cin >> row >> col)) {
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                        cout << "Invalid input! Please enter two numbers (0-2)." << endl;
+                        continue;
+                    }
+
+                    game.makeMove(row, col);
+                }
+            }
+
+            char winner = game.getWinner();
+            if (winner == 'D') {
+                cout << "Game ended in a draw!" << endl;
+            }
+            else {
+                cout << "Player " << winner << " is the winner!" << endl;
+            }
+
+            cout << "Total moves made: " << game.getMoveCount() << endl;
             break;
         }
 
