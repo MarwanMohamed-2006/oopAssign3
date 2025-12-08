@@ -10,6 +10,7 @@
 #include "Pyramid_Board.h"
 #include "Pyramid_UI.h"
 #include "Misere_XO.h"
+#include "Obstacles_TicTacToe_Classes.h"
 
 using namespace std;
 
