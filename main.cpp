@@ -67,7 +67,7 @@ int main()
             for (int i = 0; i < 2; ++i)
                 delete players[i];
             delete[] players;
-            delete game_ui; // Added missing delete
+            delete game_ui; 
             break;
         }
         case 5:
@@ -79,7 +79,6 @@ int main()
             Player<char>* players[2];
             string names[2];
 
-            // إنشاء اللاعبين
             for (int i = 0; i < 2; i++) {
                 cout << "Enter Player " << i + 1 << " name: ";
                 cin >> names[i];
@@ -109,7 +108,7 @@ int main()
 					break;
 				}
 
-                turn = 1 - turn;  // تغيير الدور
+                turn = 1 - turn;  
             }
             break;
         }
