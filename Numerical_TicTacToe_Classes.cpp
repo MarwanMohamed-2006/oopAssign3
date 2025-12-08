@@ -7,14 +7,12 @@
 using namespace std;
 
 Numerical_Board::Numerical_Board() : Board(3, 3) {
-    // Initialize all cells with blank_symbol
     for (auto& row : board)
         for (auto& cell : row)
             cell = blank_symbol;
 
-    // Initialize available numbers for each player
-    player1_available = { 1, 3, 5, 7, 9 }; // Odd numbers
-    player2_available = { 2, 4, 6, 8 };    // Even numbers
+    player1_available = { 1, 3, 5, 7, 9 }; 
+    player2_available = { 2, 4, 6, 8 };  
 }
 
 bool Numerical_Board::update_board(Move<int>* move) {
@@ -22,29 +20,24 @@ bool Numerical_Board::update_board(Move<int>* move) {
     int y = move->get_y();
     int number = move->get_symbol();
 
-    // Validate coordinates
     if (x < 0 || x >= rows || y < 0 || y >= columns) {
         cout << "Invalid coordinates! Must be between 0 and 2.\n";
         return false;
     }
 
-    // Check if cell is already occupied
     if (board[x][y] != blank_symbol) {
         cout << "Cell already occupied!\n";
         return false;
     }
 
-    // Determine which player's turn based on number (odd or even)
     bool is_odd = (number % 2 == 1);
     set<int>& available = is_odd ? player1_available : player2_available;
 
-    // Check if number is available
     if (available.find(number) == available.end()) {
         cout << "Number " << number << " is not available or already used!\n";
         return false;
     }
 
-    // Apply the move
     board[x][y] = number;
     available.erase(number);
     n_moves++;
@@ -52,7 +45,6 @@ bool Numerical_Board::update_board(Move<int>* move) {
 }
 
 bool Numerical_Board::is_win(Player<int>* player) {
-    // Check all rows
     for (int i = 0; i < rows; ++i) {
         if (board[i][0] != blank_symbol &&
             board[i][1] != blank_symbol &&
@@ -63,7 +55,6 @@ bool Numerical_Board::is_win(Player<int>* player) {
         }
     }
 
-    // Check all columns
     for (int j = 0; j < columns; ++j) {
         if (board[0][j] != blank_symbol &&
             board[1][j] != blank_symbol &&
@@ -74,7 +65,6 @@ bool Numerical_Board::is_win(Player<int>* player) {
         }
     }
 
-    // Check main diagonal (top-left to bottom-right)
     if (board[0][0] != blank_symbol &&
         board[1][1] != blank_symbol &&
         board[2][2] != blank_symbol) {
@@ -83,7 +73,6 @@ bool Numerical_Board::is_win(Player<int>* player) {
         }
     }
 
-    // Check anti-diagonal (top-right to bottom-left)
     if (board[0][2] != blank_symbol &&
         board[1][1] != blank_symbol &&
         board[2][0] != blank_symbol) {
@@ -96,7 +85,6 @@ bool Numerical_Board::is_win(Player<int>* player) {
 }
 
 bool Numerical_Board::is_draw(Player<int>* player) {
-    // Draw if all cells filled (9 moves) and no winner
     return (n_moves == 9 && !is_win(player));
 }
 
@@ -108,7 +96,6 @@ set<int> Numerical_Board::get_available_numbers(int symbol) const {
     return (symbol == 1) ? player1_available : player2_available;
 }
 
-//--------------------------------------- Numerical_UI Implementation
 
 Numerical_UI::Numerical_UI() : UI<int>("Welcome to FCAI Numerical Tic-Tac-Toe Game", 3) {
     cout << "\nGame Rules:\n";
@@ -133,7 +120,6 @@ Move<int>* Numerical_UI::get_move(Player<int>* player) {
     Numerical_Board* num_board = dynamic_cast<Numerical_Board*>(player->get_board_ptr());
 
     if (player->get_type() == PlayerType::HUMAN) {
-        // Display available numbers
         set<int> available = num_board->get_available_numbers(player->get_symbol());
         cout << "\n" << player->get_name() << "'s turn\n";
         cout << "Available numbers: ";
@@ -151,15 +137,12 @@ Move<int>* Numerical_UI::get_move(Player<int>* player) {
         cin >> number;
     }
     else if (player->get_type() == PlayerType::COMPUTER) {
-        // Simple random AI
         set<int> available = num_board->get_available_numbers(player->get_symbol());
 
-        // Get random available number
         auto it = available.begin();
         advance(it, rand() % available.size());
         number = *it;
 
-        // Get random empty cell
         do {
             x = rand() % num_board->get_rows();
             y = rand() % num_board->get_columns();
