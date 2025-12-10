@@ -119,6 +119,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConnectFour_Classes.cpp" />
     <ClCompile Include="diamond.cpp" />
     <ClCompile Include="Four4_Board.cpp" />
     <ClCompile Include="Four4_UI.cpp" />
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boardGame_Classes.h" />
+    <ClInclude Include="ConnectFour_Classes.h" />
     <ClInclude Include="diamond.h" />
     <ClInclude Include="Four4_Board.h" />
     <ClInclude Include="Four4_UI.h" />
