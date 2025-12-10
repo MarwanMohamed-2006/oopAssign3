@@ -44,7 +44,6 @@ bool WordTicTacToe_Board::is_win(Player<char>* player)
 {
     string word;
 
-    // Rows
     for (int i = 0; i < 3; i++) {
         word = "";
         for (int j = 0; j < 3; j++)
@@ -52,7 +51,6 @@ bool WordTicTacToe_Board::is_win(Player<char>* player)
         if (dictionary.count(word)) return true;
     }
 
-    // Columns
     for (int i = 0; i < 3; i++) {
         word = "";
         for (int j = 0; j < 3; j++)
@@ -60,7 +58,6 @@ bool WordTicTacToe_Board::is_win(Player<char>* player)
         if (dictionary.count(word)) return true;
     }
 
-    // Diagonals
     word = "";
     word += board[0][0]; word += board[1][1]; word += board[2][2];
     if (dictionary.count(word)) return true;
