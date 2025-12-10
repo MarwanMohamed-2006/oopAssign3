@@ -159,9 +159,6 @@ Marwan Tarek Hegazy
 Ali Samy Mohamed
 Mohamed hassan Moussa 
 
-## 📚 Documentation
-
-Full API documentation generated with Doxygen is available in the `docs/html` directory.
 
 ### Key Classes Documentation
 
@@ -170,7 +167,6 @@ Full API documentation generated with Doxygen is available in the `docs/html` di
 - **UI\<T\>**: Handles user interaction and display
 - **GameManager\<T\>**: Controls game flow and turn management
 
-View complete documentation: [Open docs/html/index.html](docs/html/index.html)
 
 ### Adding a New Game
 
