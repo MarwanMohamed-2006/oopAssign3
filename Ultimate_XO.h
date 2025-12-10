@@ -5,9 +5,7 @@
 class Ultimate_XO_Board : public Board<char> {
 private:
     char blank_symbol = '.';
-    // مصفوفة لتتبع الفائز في كل لوحة صغيرة (9 لوحات)
-    char small_board_winners[3][3] = {};
-    // رقم اللوحة الصغيرة التالية المطلوب اللعب فيها (-1 = أي لوحة)
+    char small_board_winners[3][3];
     int next_board;
 
 public:
@@ -18,11 +16,8 @@ public:
     bool is_draw(Player<char>* player) override;
     bool game_is_over(Player<char>* player) override;
 
-    // دالة للتحقق من الفوز في لوحة صغيرة
     char check_small_board_winner(int board_row, int board_col);
-    // دالة للتحقق من الفوز في اللوحة الرئيسية
     bool check_main_board_win(char symbol);
-    // الحصول على رقم اللوحة التالية
     int get_next_board() const { return next_board; }
 };
 

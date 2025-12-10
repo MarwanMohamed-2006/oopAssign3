@@ -10,6 +10,10 @@ Ultimate_XO_Board::Ultimate_XO_Board() : Board<char>(9, 9) {
         for (auto& cell : row)
             cell = blank_symbol;
 
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            small_board_winners[i][j] = blank_symbol;
+
     next_board = -1;
 }
 
@@ -35,7 +39,6 @@ bool Ultimate_XO_Board::update_board(Move<char>* move) {
     if (small_board_winners[board_row][board_col] != blank_symbol)
         return false;
 
-    // وضع الحركة على اللوحة
     board[x][y] = mark;
     n_moves++;
 

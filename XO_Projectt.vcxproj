@@ -126,6 +126,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Misere_XO.cpp" />
     <ClCompile Include="Numerical_TicTacToe_Classes.cpp" />
+    <ClCompile Include="Obstacles_TicTacToe_Classes.cpp" />
     <ClCompile Include="Pyramid_Booard.cpp" />
     <ClCompile Include="Pyramid_UI.cpp" />
     <ClCompile Include="SUS.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Infinity_Board..h" />
     <ClInclude Include="Misere_XO.h" />
     <ClInclude Include="Numerical_TicTacToe_Classes.h" />
+    <ClInclude Include="Obstacles_TicTacToe_Classes.h" />
     <ClInclude Include="Pyramid_Board.h" />
     <ClInclude Include="Pyramid_UI.h" />
     <ClInclude Include="SUS.h" />

@@ -1,5 +1,4 @@
-﻿//--------------------------------------- 
-#include <iostream>
+﻿#include <iostream>
 #include <ctime>
 #include "BoardGame_Classes.h"
 #include "XO_Classes.h"
@@ -15,6 +14,7 @@
 #include "Pyramid_Board.h"
 #include "Pyramid_UI.h"
 #include "Obstacles_TicTacToe_Classes.h"
+#include "SUS.h"    
 using namespace std;
 
 int main()
@@ -29,20 +29,19 @@ int main()
         cout << "\n==============================\n";
         cout << " FCAI Board Games Menu \n";
         cout << "==============================\n";
-        cout << "1. Tic-Tac-Toe (X-O)\n";
-        cout << "2. SUS\n";
-        cout << "3. Four-in-a-Row\n";
-        cout << "4. 5x5 Tic-Tac-Toe\n";
-        cout << "5. Word Tic-Tac-Toe\n";
-        cout << "6. Misere Tic-Tac-Toe\n";
-        cout << "7. Diamond Tic-Tac-Toe\n";
-        cout << "8. 4x4 Tic-Tac-Toe\n";
-        cout << "9. Pyramid Tic-Tac-Toe\n";
-        cout << "10. Numerical Tic-Tac-Toe (Group)\n";
-        cout << "11. Obstacles Tic-Tac-Toe (Group)\n";
-        cout << "12. Infinity Tic-Tac-Toe (Group)\n";
-        cout << "13. Ultimate Tic-Tac-Toe (Bonus)\n";
-        cout << "14. Memory Tic-Tac-Toe (Bonus)\n";
+        cout << "1. SUS\n";
+        cout << "2. Four-in-a-Row\n";
+        cout << "3. 5x5 Tic-Tac-Toe\n";
+        cout << "4. Word Tic-Tac-Toe\n";
+        cout << "5. Misere Tic-Tac-Toe\n";
+        cout << "6. Diamond Tic-Tac-Toe\n";
+        cout << "7. 4x4 Tic-Tac-Toe\n";
+        cout << "8. Pyramid Tic-Tac-Toe\n";
+        cout << "9. Numerical Tic-Tac-Toe (Group)\n";
+        cout << "10. Obstacles Tic-Tac-Toe (Group)\n";
+        cout << "11. Infinity Tic-Tac-Toe (Group)\n";
+        cout << "12. Ultimate Tic-Tac-Toe (Bonus)\n";
+        cout << "13. Memory Tic-Tac-Toe (Bonus)\n";
         cout << "0. Exit\n";
         cout << "==============================\n";
         cout << "Enter your choice: ";
@@ -50,18 +49,25 @@ int main()
 
         switch (choice)
         {
-        case 1: {
-            cout << "\n=== SUS Game ===\n";
-            break;
+        case 1:
+        {
+            UI<char>* game_ui = new SUS_UI();
+            Board<char>* xo_board = new SUS_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> x_o_game(xo_board, players, game_ui);
+            x_o_game.run();
 
+            delete xo_board;
+            for (int i = 0; i < 2; ++i) {
+                delete players[i];
+            }
+            delete[] players;
+            break;
         }
         case 2:
             cout << "\n=== Four-in-a-Row ===\n";
             break;
-
         case 3:
-
-        case 4:
         {
             UI<char>* game_ui = new TicTacToe_UI();
             Board<char>* tic5_board = new TicTacToe_Board();
@@ -73,10 +79,10 @@ int main()
             for (int i = 0; i < 2; ++i)
                 delete players[i];
             delete[] players;
-            delete game_ui; 
+            delete game_ui;
             break;
         }
-        case 5:
+        case 4:
         {
             WordTicTacToe_Board::loadDictionary();
             WordTicTacToe_Board game;
@@ -102,23 +108,23 @@ int main()
                 }
                 delete move;
 
-				if (game.is_win(players[turn])) {
-					game.printBoard();
-					cout << players[turn]->get_name() << " wins!\n";
-					break;
-				}
+                if (game.is_win(players[turn])) {
+                    game.printBoard();
+                    cout << players[turn]->get_name() << " wins!\n";
+                    break;
+                }
 
-				if (game.is_draw(players[turn])) {
-					game.printBoard();
-					cout << "It's a draw!\n";
-					break;
-				}
+                if (game.is_draw(players[turn])) {
+                    game.printBoard();
+                    cout << "It's a draw!\n";
+                    break;
+                }
 
-                turn = 1 - turn;  
+                turn = 1 - turn;
             }
             break;
         }
-        case 6:
+        case 5:
         {
             UI<char>* game_ui = new Misere_XO_UI();
             Board<char>* misere_board = new Misere_XO_Board();
@@ -133,7 +139,7 @@ int main()
             delete game_ui;
             break;
         }
-        case 7:
+        case 6:
         {
             UI<char>* game_ui = new diamond_UI();
             Board<char>* game_board = new diamond_board();
@@ -148,38 +154,38 @@ int main()
             break;
         }
 
+        case 7:
+        {
+            UI<char>* game_ui = new Four4_UI();
+            Board<char>* four4_board = new Four4_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> four4_game(four4_board, players, game_ui);
+            four4_game.run();
+
+            delete four4_board;
+            for (int i = 0; i < 2; ++i) delete players[i];
+            delete[] players;
+            delete game_ui;
+            break;
+
+        }
         case 8:
-            {
-             UI<char>* game_ui = new Four4_UI();
-             Board<char>* four4_board = new Four4_Board();
-             Player<char>** players = game_ui->setup_players();
-             GameManager<char> four4_game(four4_board, players, game_ui);
-             four4_game.run();
+        {
+            UI<char>* game_ui = new Pyramid_UI();
+            Board<char>* pyr_board = new Pyramid_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> pyr_game(pyr_board, players, game_ui);
+            pyr_game.run();
 
-              delete four4_board;
-              for (int i = 0; i < 2; ++i) delete players[i];
-              delete[] players;
-              delete game_ui;
-         break;
-            
+            delete pyr_board;
+            for (int i = 0; i < 2; ++i) delete players[i];
+            delete[] players;
+            delete game_ui;
+            break;
+
         }
+
         case 9:
-            {
-         UI<char>* game_ui = new Pyramid_UI();
-         Board<char>* pyr_board = new Pyramid_Board();
-        Player<char>** players = game_ui->setup_players();
-        GameManager<char> pyr_game(pyr_board, players, game_ui);
-         pyr_game.run();
-
-        delete pyr_board;
-        for (int i = 0; i < 2; ++i) delete players[i];
-         delete[] players;
-         delete game_ui;
-         break;
-            
-        }
-
-        case 10:
         {
             UI<int>* game_ui = new Numerical_UI();
             Board<int>* num_board = new Numerical_Board();
@@ -194,32 +200,31 @@ int main()
             delete game_ui;
             break;
         }
-        case 11:
-		{
+        case 10:
+        {
             cout << "\n=== Obstacles Tic-Tac-Toe (Group) ===\n";
-    
+
             Obstacles_UI* ui = new Obstacles_UI();
             Obstacles_Board* board = new Obstacles_Board();
-    
+
             ui->set_obstacles_board(board);
-    
+
             Player<char>** players = ui->setup_players();
             GameManager<char> game(board, players, ui);
             game.run();
-    
-           delete board;
-           for (int i = 0; i < 2; ++i) delete players[i];
-           delete[] players;
-           delete ui;
-           break;
+
+            delete board;
+            for (int i = 0; i < 2; ++i) delete players[i];
+            delete[] players;
+            delete ui;
+            break;
         }
 
-        case 12:
+        case 11:
         {
             cout << "\n=== Infinity Tic-Tac-Toe ===\n";
             cout << "Rules: After every 3 moves, the oldest mark disappears!\n";
 
-            // Ask if player wants to play against computer
             char choice;
             cout << "Play against computer? (y/n): ";
             cin >> choice;
@@ -231,7 +236,6 @@ int main()
             int row, col;
 
             while (!game.isGameEnded()) {
-                // Check if it's computer's turn
                 if (game.isComputerTurn()) {
                     game.makeComputerMove();
                 }
@@ -262,7 +266,7 @@ int main()
             break;
         }
 
-        case 13:
+        case 12:
         {
             UI<char>* game_ui = new Ultimate_XO_UI();
             Board<char>* ultimate_board = new Ultimate_XO_Board();
@@ -278,7 +282,7 @@ int main()
             break;
         }
 
-        case 14:
+        case 13:
         {
             UI<char>* game_ui = new XO_UI();
             Board<char>* xo_board = new X_O_Board();
