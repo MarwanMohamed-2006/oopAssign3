@@ -13,6 +13,7 @@
 #include "Four4_UI.h"
 #include "Pyramid_Board.h"
 #include "Pyramid_UI.h"
+#include "ConnectFour_Classes.h"
 #include "Obstacles_TicTacToe_Classes.h"
 #include "SUS.h"    
 using namespace std;
@@ -68,6 +69,22 @@ int main()
             cout << "\n=== Four-in-a-Row ===\n";
             break;
         case 3:
+        {
+            cout << "\n=== Four-in-a-Row (Connect Four) ===\n";
+            UI<char>* game_ui = new ConnectFour_UI();
+            Board<char>* connect_board = new ConnectFour_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> connect_game(connect_board, players, game_ui);
+            connect_game.run();
+
+            delete connect_board;
+            for (int i = 0; i < 2; ++i)
+                delete players[i];
+            delete[] players;
+            delete game_ui;
+            break;
+        }
+        case 4:
         {
             UI<char>* game_ui = new TicTacToe_UI();
             Board<char>* tic5_board = new TicTacToe_Board();
